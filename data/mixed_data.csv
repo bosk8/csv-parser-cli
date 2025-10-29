@@ -1,0 +1,9 @@
+ID,Name,Value,Notes
+1,Item A, 100 ,First item
+2,Item B,250,Second item with "quotes"
+3,Item C, non-numeric ,Third item
+4,Item D, 150.5 ,Floating point
+5,"Item E", 300,Item with quotes in name
+,Item F, 50,Item with missing ID
+7,Item G,,Item with missing value
+8,Item H,200, Last item
