@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <cstddef>
 
 enum class FilterOperator {
     EQUALS,           // ==
@@ -70,26 +71,48 @@ private:
         }
     }
     
-    static bool evaluateNumericCondition(const std::string& cellValue, const FilterCondition& condition) {
+    // Helper to trim leading/trailing whitespace
+    static std::string trim(const std::string& str) {
+        const std::string whitespace = " \t\n\r";
+        const auto strBegin = str.find_first_not_of(whitespace);
+        if (strBegin == std::string::npos) return ""; // no content
+
+        const auto strEnd = str.find_last_not_of(whitespace);
+        const auto strRange = strEnd - strBegin + 1;
+
+        return str.substr(strBegin, strRange);
+    }
+
+    static bool isNumber(const std::string& s) {
         try {
-            double cellNum = std::stod(cellValue);
+            std::stod(s);
+        } catch(const std::invalid_argument&) {
+            return false;
+        } catch(const std::out_of_range&) {
+            return false;
+        }
+        return true;
+    }
+
+    static bool evaluateNumericCondition(const std::string& cellValue, const FilterCondition& condition) {
+        std::string trimmedCell = trim(cellValue);
+        if (!isNumber(trimmedCell) || !isNumber(condition.value)) {
+            return false; // Non-numeric values cannot satisfy numeric conditions
+        }
+
+        try {
+            double cellNum = std::stod(trimmedCell);
             double conditionNum = std::stod(condition.value);
             
             switch (condition.op) {
-                case FilterOperator::GREATER_THAN:
-                    return cellNum > conditionNum;
-                case FilterOperator::LESS_THAN:
-                    return cellNum < conditionNum;
-                case FilterOperator::GREATER_EQUAL:
-                    return cellNum >= conditionNum;
-                case FilterOperator::LESS_EQUAL:
-                    return cellNum <= conditionNum;
-                default:
-                    return false;
+                case FilterOperator::GREATER_THAN: return cellNum > conditionNum;
+                case FilterOperator::LESS_THAN: return cellNum < conditionNum;
+                case FilterOperator::GREATER_EQUAL: return cellNum >= conditionNum;
+                case FilterOperator::LESS_EQUAL: return cellNum <= conditionNum;
+                default: return false;
             }
         } catch (const std::exception&) {
-            // If conversion fails, treat as string comparison
-            return false;
+            return false; // Should not be reached due to isNumber checks
         }
     }
 };

@@ -1,11 +1,16 @@
 # Makefile for CSV Parser CLI
 
+# Makefile for CSV Parser CLI
+
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 TARGET = bin/csv_parser
 SRCDIR = src
+TESTDIR = tests
 SOURCES = $(SRCDIR)/main.cpp $(SRCDIR)/csv_parser.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
+TEST_TARGET = bin/test_runner
+TEST_SOURCES = $(TESTDIR)/test_csv_parser.cpp
 
 .PHONY: all build clean run test help
 
@@ -15,44 +20,35 @@ build: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	@mkdir -p bin
-	$(CXX) $(OBJECTS) -o $(TARGET)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET)
 
 $(SRCDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f $(OBJECTS) $(TARGET) $(TEST_TARGET)
 	rm -rf bin
 
 run: build
 	@echo "Running CSV Parser with sample data..."
 	@if [ -f data/sample.csv ]; then \
-		/lib64/ld-linux-x86-64.so.2 ./$(TARGET) data/sample.csv 0 == "John"; \
+		./$(TARGET) data/sample.csv 0 == "John"; \
 	else \
 		echo "Sample data not found. Please create data/sample.csv first."; \
 	fi
 
-test: build
-	@echo "Running basic tests..."
-	@echo "Test 1: Basic filtering"
-	@if [ -f data/sample.csv ]; then \
-		/lib64/ld-linux-x86-64.so.2 ./$(TARGET) data/sample.csv 0 == "John" > /tmp/test1.out && echo "✓ Test 1 passed"; \
-	else \
-		echo "✗ Test 1 failed: data/sample.csv not found"; \
-	fi
-	@echo "Test 2: Help message"
-	@/lib64/ld-linux-x86-64.so.2 ./$(TARGET) --help > /tmp/test2.out && echo "✓ Test 2 passed" || echo "✗ Test 2 failed"
-	@echo "Test 3: Numeric comparison"
-	@if [ -f data/sample.csv ]; then \
-		/lib64/ld-linux-x86-64.so.2 ./$(TARGET) data/sample.csv 1 ">" 25 > /tmp/test3.out && echo "✓ Test 3 passed"; \
-	else \
-		echo "✗ Test 3 failed: data/sample.csv not found"; \
-	fi
+test: $(TEST_TARGET)
+	@echo "Running tests..."
+	./$(TEST_TARGET)
+
+$(TEST_TARGET): $(TEST_SOURCES) $(filter-out $(SRCDIR)/main.o,$(OBJECTS))
+	@mkdir -p bin
+	$(CXX) $(CXXFLAGS) -I$(SRCDIR) $^ -o $@
 
 help:
 	@echo "Available targets:"
 	@echo "  build  - Compile the CSV parser"
 	@echo "  clean  - Remove build artifacts"
 	@echo "  run    - Run with sample data"
-	@echo "  test   - Run basic tests"
+	@echo "  test   - Run tests"
 	@echo "  help   - Show this help message"

@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <cstddef>
 
 class CSVParser {
 private:
@@ -13,28 +14,23 @@ private:
     // Helper function to parse a single CSV line with quote awareness
     std::vector<std::string> parseLine(const std::string& line) {
         std::vector<std::string> fields;
-        std::stringstream ss(line);
         std::string field;
+        std::stringstream ss(line);
+        char c;
         bool inQuotes = false;
-        
-        while (ss.good()) {
-            char c = ss.get();
-            
+
+        while (ss.get(c)) {
             if (c == '"') {
                 inQuotes = !inQuotes;
             } else if (c == ',' && !inQuotes) {
                 fields.push_back(field);
                 field.clear();
-            } else if (c != EOF) {
+            } else {
                 field += c;
             }
         }
-        
-        // Add the last field
-        if (!field.empty() || ss.gcount() > 0) {
-            fields.push_back(field);
-        }
-        
+
+        fields.push_back(field); // Add the last field
         return fields;
     }
 
