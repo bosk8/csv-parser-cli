@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bosk8 CSV UI</title>
+  <link rel="stylesheet" href="./bosk8.css" />
+</head>
+<body>
+  <main class="bosk8">
+    <div class="container">
+      <section class="card border-b" style="padding:4rem 2rem; display:flex; flex-direction:column; align-items:center;">
+        <h1 class="tagline">A LIGHTWEIGHT SPEC-DRIVEN FRAMEWORK</h1>
+      </section>
+
+      <section class="card border-b" style="padding: var(--space-2) var(--space-1); display: grid; gap: var(--space-1);">
+        <div class="label">IMPORT CSV</div>
+        <input id="file-input" type="file" accept=".csv" class="b8-input" />
+        <div id="file-name" class="meta"></div>
+        <div class="tooltip-trigger" style="justify-self:end;">
+          <span class="copy-icon">i</span>
+          <div class="tooltip">Upload a CSV. First row is treated as header.</div>
+        </div>
+      </section>
+
+      <section class="card border-b" id="filter-section" style="display:none; padding: var(--space-2) var(--space-1); display: grid; gap: var(--space-1);">
+        <div class="label">CONFIGURE FILTER</div>
+        <label class="label" for="col">COLUMN INDEX</label>
+        <select id="col" class="b8-input"></select>
+        <label class="label" for="op">OPERATOR</label>
+        <select id="op" class="b8-input">
+          <option>==</option><option>!=</option><option>></option><option><</option><option>>=</option><option><=</option><option>contains</option>
+        </select>
+        <label class="label" for="val">VALUE</label>
+        <input id="val" type="text" class="b8-input" />
+        <button id="apply" class="copy-btn"><span class="meta">APPLY</span></button>
+        <div id="error" class="meta" style="color: var(--text-subtle);"></div>
+      </section>
+
+      <section class="card" id="results-section" style="display:none; padding: var(--space-2) var(--space-1); display: grid; gap: var(--space-1);">
+        <div class="label">RESULTS</div>
+        <pre id="results" class="meta" style="color: var(--text-subtle);"></pre>
+        <button id="export" class="copy-btn"><span class="meta">EXPORT CSV</span></button>
+      </section>
+
+      <section class="card grid-tiles border-b" style="margin-top: var(--space-2);">
+        <div class="tile border-r">UNIVERSAL</div>
+        <div class="tile">OPEN SOURCE</div>
+        <div class="tile border-r">NO API KEYS</div>
+        <div class="tile">NO MCP</div>
+      </section>
+
+      <section class="card" style="margin-top: var(--space-2);">
+        <div class="faq-item">
+          <button class="faq-q">WHAT OPERATORS ARE SUPPORTED?</button>
+          <div class="faq-a">==, !=, >, <, >=, <=, contains</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">HOW ARE EMPTY RESULTS HANDLED?</button>
+          <div class="faq-a">Header only is shown. This mirrors the CLI behavior.</div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="./app.js"></script>
+  <script>
+    // Mobile tooltip toggle
+    document.querySelectorAll('.tooltip-trigger').forEach(function(el){
+      el.addEventListener('click', function(){ el.classList.toggle('active'); });
+    });
+    // FAQ toggles
+    document.querySelectorAll('.faq-q').forEach(function(q){
+      q.addEventListener('click', function(){
+        var a = q.nextElementSibling; a.classList.toggle('active');
+      });
+    });
+  </script>
+</body>
+</html>
+
+
