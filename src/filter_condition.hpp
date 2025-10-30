@@ -1,6 +1,7 @@
 #ifndef FILTER_CONDITION_HPP
 #define FILTER_CONDITION_HPP
 
+#include <cstddef>  // for size_t
 #include <string>
 #include <vector>
 

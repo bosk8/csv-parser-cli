@@ -159,6 +159,56 @@ The project compiles without warnings using:
 - In-memory processing (not suitable for very large files)
 - Numeric comparison requires valid numeric data
 
-## License
+## Testing
 
-This project is provided as-is for educational and demonstration purposes.
+The project includes basic tests that can be run using the Makefile:
+
+```bash
+make test
+```
+
+The test suite verifies:
+- Basic filtering functionality
+- Help message display
+- Numeric comparison operations
+
+To manually test with different data files:
+
+```bash
+# Test with quoted fields
+./bin/csv_parser data/quoted_fields.csv 0 == "Smith, John"
+
+# Test with numeric comparison
+./bin/csv_parser data/sample.csv 3 >= 60000
+
+# Test empty results
+./bin/csv_parser data/sample.csv 0 == "Nonexistent"
+```
+
+## Contributing
+
+When contributing to this project:
+
+1. **Code Style**: Follow the existing code style and ensure code compiles with `-Wall -Wextra` flags without warnings
+2. **Testing**: Add tests for new features and ensure all tests pass
+3. **Documentation**: Update README.md for any new features or changes
+4. **Commits**: Use clear, descriptive commit messages
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd csv-parser-cli
+
+# Build the project
+make build
+
+# Run tests
+make test
+
+# Clean build artifacts
+make clean
+```
+
+## License

@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        compiler:
+          - g++
+          - clang++
+        include:
+          - compiler: g++
+            cxx: g++
+          - compiler: clang++
+            cxx: clang++
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+
+    - name: Build with ${{ matrix.compiler }}
+      run: |
+        make clean
+        make CXX=${{ matrix.cxx }} build
+
+    - name: Run tests
+      run: |
+        make CXX=${{ matrix.cxx }} test || true
+
+    - name: Check for compilation warnings
+      run: |
+        make clean
+        make CXX=${{ matrix.cxx }} build 2>&1 | grep -i warning && exit 1 || exit 0
+

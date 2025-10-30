@@ -16,6 +16,7 @@ build: $(TARGET)
 $(TARGET): $(OBJECTS)
 	@mkdir -p bin
 	$(CXX) $(OBJECTS) -o $(TARGET)
+	@chmod +x $(TARGET)
 
 $(SRCDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -27,7 +28,7 @@ clean:
 run: build
 	@echo "Running CSV Parser with sample data..."
 	@if [ -f data/sample.csv ]; then \
-		/lib64/ld-linux-x86-64.so.2 ./$(TARGET) data/sample.csv 0 == "John"; \
+		./$(TARGET) data/sample.csv 0 == "John"; \
 	else \
 		echo "Sample data not found. Please create data/sample.csv first."; \
 	fi
@@ -36,15 +37,15 @@ test: build
 	@echo "Running basic tests..."
 	@echo "Test 1: Basic filtering"
 	@if [ -f data/sample.csv ]; then \
-		/lib64/ld-linux-x86-64.so.2 ./$(TARGET) data/sample.csv 0 == "John" > /tmp/test1.out && echo "✓ Test 1 passed"; \
+		./$(TARGET) data/sample.csv 0 == "John" > /tmp/test1.out && echo "✓ Test 1 passed"; \
 	else \
 		echo "✗ Test 1 failed: data/sample.csv not found"; \
 	fi
 	@echo "Test 2: Help message"
-	@/lib64/ld-linux-x86-64.so.2 ./$(TARGET) --help > /tmp/test2.out && echo "✓ Test 2 passed" || echo "✗ Test 2 failed"
+	@./$(TARGET) --help > /tmp/test2.out && echo "✓ Test 2 passed" || echo "✗ Test 2 failed"
 	@echo "Test 3: Numeric comparison"
 	@if [ -f data/sample.csv ]; then \
-		/lib64/ld-linux-x86-64.so.2 ./$(TARGET) data/sample.csv 1 ">" 25 > /tmp/test3.out && echo "✓ Test 3 passed"; \
+		./$(TARGET) data/sample.csv 1 ">" 25 > /tmp/test3.out && echo "✓ Test 3 passed"; \
 	else \
 		echo "✗ Test 3 failed: data/sample.csv not found"; \
 	fi
