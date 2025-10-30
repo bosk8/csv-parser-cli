@@ -1,0 +1,6 @@
+Name,Email,Phone,Notes
+"José García","josé@example.com","+1-555-0123","Special characters: áéíóú"
+"François Dupont","françois@example.com","+33-1-23-45-67-89","Accented characters"
+"李小明","lixiaoming@example.com","+86-138-0013-8000","Chinese characters"
+"Александр","alex@example.com","+7-495-123-45-67","Cyrillic script"
+"محمد أحمد","mohammed@example.com","+966-50-123-4567","Arabic script"

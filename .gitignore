@@ -1,27 +1,19 @@
-# Compiled Object files
+# Build artifacts
 *.o
-*.obj
-
-# Executable files
+*.exe
 bin/
-csv_parser
-csv_parser_*
 
-# Temporary files
-*.tmp
-*.temp
-/tmp/
-
-# IDE files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# Build artifacts
-build/
-dist/
+# Temporary files
+*.tmp
+*.log

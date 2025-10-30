@@ -1,15 +1,25 @@
-# CSV Parser CLI
+# CSV Parser
 
-A lightweight, dependency-free C++ command-line utility that parses CSV files and outputs filtered rows based on simple column conditions. This project demonstrates mastery of file I/O, string manipulation, and data processing using only the C++17 standard library.
+A lightweight, dependency-free C++ command-line utility with a web-based UI for parsing CSV files and filtering rows based on simple column conditions. This project demonstrates mastery of file I/O, string manipulation, and data processing using only the C++17 standard library, plus a complete web UI implementation.
 
 ## Features
 
+### CLI (Command-Line Interface)
 - **CSV Parsing**: Quote-aware field handling with support for commas inside quoted fields
-- **Column Filtering**: Support for multiple operators (==, !=, >, <, >=, <=, contains)
-- **Command-Line Interface**: Simple, Unix-style command-line interface
+- **Column Filtering**: Support for 7 operators (==, !=, >, <, >=, <=, contains)
+- **Simple Interface**: Unix-style command-line interface
 - **Error Handling**: Graceful handling of edge cases with informative error messages
 - **No Dependencies**: Uses only C++17 standard library features
 - **Cross-Platform**: Compiles with both g++ and clang++
+
+### Web UI
+- **Interactive Interface**: Visual web-based UI for CSV filtering
+- **File Upload**: Drag-and-drop or click to upload CSV files
+- **Real-time Filtering**: Instant results with all 7 filter operators
+- **Export Functionality**: Download filtered results as CSV
+- **Responsive Design**: Works seamlessly on mobile and desktop
+- **Accessibility**: WCAG 2.2 AA compliant with full keyboard support
+- **Dark Theme**: Bosk8 Dark Minimal Mono design system
 
 ## Compilation
 
@@ -40,7 +50,33 @@ clang++ -std=c++17 -Wall -Wextra -O2 src/main.cpp src/csv_parser.cpp -o csv_pars
 
 ## Usage
 
-### Basic Syntax
+### Web UI (Recommended)
+
+The easiest way to use the CSV parser is through the web interface:
+
+```bash
+# Option 1: Serve with Python
+cd web
+python3 -m http.server 8000
+# Open http://localhost:8000/index.html in your browser
+
+# Option 2: Open directly in browser
+# Open web/index.html in a modern browser
+```
+
+Features:
+- Upload CSV files via file input
+- Visual column and operator selection
+- Instant filtering and results
+- Export filtered results as CSV
+
+See [csv-parser-ui/README.md](csv-parser-ui/README.md) for more details.
+
+### CLI (Command-Line)
+
+For command-line usage:
+
+#### Basic Syntax
 
 ```bash
 csv_parser <input_file> <column_index> <operator> <value> [output_file]
@@ -122,17 +158,41 @@ The project includes several test CSV files in the `data/` directory:
 ## Project Structure
 
 ```
-├── src/
-│   ├── main.cpp           # Main application logic
-│   ├── csv_parser.hpp     # CSV parsing class
-│   ├── csv_parser.cpp     # CSV parser implementation
-│   └── filter_condition.hpp # Filtering logic
-├── data/
-│   ├── sample.csv         # Basic test data
-│   ├── quoted_fields.csv  # Quoted field test data
-│   ├── empty_rows.csv     # Empty row test data
-│   └── special_chars.csv  # Special character test data
-├── bin/                   # Compiled executable
+├── src/                  # C++ CLI source files
+│   ├── main.cpp
+│   ├── csv_parser.hpp
+│   ├── csv_parser.cpp
+│   └── filter_condition.hpp
+├── web/                  # Web UI files
+│   ├── index.html        # Main HTML interface
+│   ├── bosk8.css        # Styles (Bosk8 Dark Minimal Mono)
+│   └── app.js            # JavaScript application logic
+├── csv-parser-ui/        # Self-contained UI package
+│   ├── src/              # C++ source files
+│   ├── web/              # Web UI files
+│   ├── data/             # Sample CSV files
+│   ├── docs/             # Complete UI/UX documentation
+│   └── README.md         # UI package documentation
+├── data/                 # Sample CSV test files
+│   ├── sample.csv
+│   ├── quoted_fields.csv
+│   ├── empty_rows.csv
+│   └── special_chars.csv
+├── docs/                 # UI/UX documentation
+│   ├── README.md                    # Documentation index
+│   ├── 01-executive-summary.md
+│   ├── 02-information-architecture.md
+│   ├── 03-screen-specifications.md
+│   ├── 04-component-library.md
+│   ├── 05-function-to-ui-mapping.md
+│   ├── 06-navigation-routing.md
+│   ├── 07-accessibility-checklist.md
+│   ├── 08-style-compliance-matrix.md
+│   ├── 09-style-decisions-log.md
+│   ├── 10-dev-handoff.md
+│   ├── FINAL-SANITY-CHECK.md
+│   └── BROWSER-TEST-REPORT.md
+├── bin/                  # Compiled executable
 ├── Makefile              # Build configuration
 └── README.md             # This file
 ```
@@ -210,5 +270,26 @@ make test
 # Clean build artifacts
 make clean
 ```
+
+## Documentation
+
+Complete UI/UX documentation is available in the `docs/` directory:
+- [Documentation Index](docs/README.md) - Start here for documentation overview
+- [Developer Handoff](docs/10-dev-handoff.md) - Implementation guide
+- [Browser Test Report](docs/BROWSER-TEST-REPORT.md) - Testing results
+- [Style Compliance Matrix](docs/08-style-compliance-matrix.md) - Design token mapping
+
+The `csv-parser-ui/` folder contains a self-contained package with all UI files and documentation.
+
+## Web UI Features
+
+- ✅ **File Upload**: Drag-and-drop or click to select CSV files
+- ✅ **Visual Filtering**: Dropdown menus for column and operator selection
+- ✅ **Real-time Results**: Instant filtering and display
+- ✅ **Export**: Download filtered results as CSV
+- ✅ **Responsive**: Works on mobile (< 768px) and desktop (≥ 768px)
+- ✅ **Accessible**: WCAG 2.2 AA compliant with ARIA attributes
+- ✅ **Keyboard Support**: Full keyboard navigation including Enter key
+- ✅ **Dark Theme**: Bosk8 Dark Minimal Mono design system
 
 ## License
